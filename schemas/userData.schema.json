@@ -9,7 +9,7 @@
         {
             "Name": "string",
             "email": "user@example.com",
-            "emailVerified": true,
+            "emailVerified":true,
             "createDate": "2019-08-24",
             "accountName": "string",
             "password": "pa$$word"

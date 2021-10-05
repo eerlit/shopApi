@@ -1,3 +1,4 @@
+const assert = require('assert');
 const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
@@ -7,7 +8,8 @@ const chaiJsonSchemaAjv = require('chai-json-schema-ajv')
 chai.use(chaiJsonSchemaAjv);
 const address = "http://localhost:3000"
 
-const userInfoArraySchema = require('../schemas/userInfoArray.schema.json');
+const userDataSchema = require("../schemas/userData.schema.json");
+
 
 
 describe('shop API tests', function(){
@@ -32,16 +34,103 @@ expect(err).to.be.null;
 
 expect(res).to.have.status(200);
 
-//expect(res.body).to.be.jsonSchema(userInfoArraySchema);
+
 done();
 })
-
-
 })
-
-
 });
 
+describe('add new user to database', function () {
 
+it('should signup user', function(done) {
+chai.request(address)
+.post('/signup')
+.send(
+  {
+  Name: "string",
+  email: "user@example.com",
+  emailVerified:true,
+  createDate: "2019-08-24",
+  accountName: "string",
+  password: "pa$$word"
 
+  }
+)
+.end(function(err, res){
+expect(err).to.be.null;
+expect(res).to.have.status(201);
+done();
+  })
+})
+it('should reject with missing fileds from data structure', function(done) {
+chai.request(address)
+.post('/signup')
+.send(
+  {
+  Name: "string",
+  email: "user@example.com",
+  createDate: "2019-08-24",
+  accountName: "string",
+  password: "pa$$word"
+  }
+)
+.end(function(err, res){
+expect(err).to.be.null;
+expect(res).to.have.status(400);
+done();
+})
+});
+it('should reject request with incorrect data types', function(done) {
+chai.request(address)
+.post('/signup')
+.send(
+  {
+  Name: 123,
+  email: "user@example.com",
+  createDate: "2019-08-24",
+  accountName: "string",
+  password: "pa$$word"
+  }
+)
+.end(function(err, res){
+expect(err).to.be.null;
+expect(res).to.have.status(400);
+done();
+})
+});
+it('should reject empty post requests', function(done) {
+chai.request(address)
+.post('/signup')
+.send(
+  {
+  }
+)
+.end(function(err, res){
+expect(err).to.be.null;
+expect(res).to.have.status(400);
+done();
+})
+});
+it('should contain added user data', function(done) {
+  chai.request(address)
+  .get('/users')
+  .end(function(err, res){
+    expect(err).to.be.null;
+    expect(res).to.have.status(200);
+    
+    let found = false;
+    for(let i = 0; i< res.body.length; i++) {
+      if(res.body.length > 1) {
+        found = true;
+        break;
+      }
+    }
+    if(found == false){
+      assert.fail('Data not saved');
+    }
+    done();
+  })
+})
+
+})
 })

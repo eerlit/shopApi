@@ -10,8 +10,8 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const BasicStrategy = require('passport-http').BasicStrategy;
-const jwtStrategy = require('passport-jwt').Strategy;
-const Extractjwt = require('passport-jwt').Extractjwt;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const { v4: uuidv4 } = require('uuid');
 
 const schema = require("./schemas/userData.schema.json");
@@ -21,22 +21,16 @@ const validate = ajv.compile(schema);
 //const secrets = require('./secrets.json')
 
 let userDb = [
-  {
-"Name": "esko pentti",
-"email": "pena@kyna.com",
-"emailVerified": true,
-"createDate": "21-08-2021",
-"accountName": "pena",
-"password": "43t35dsf332xcz¤",
-"Id": uuidv4()
-}
+
 ];
 let postings = [];
 app.use(bodyParser.json());
 
 //postattu data skeeman validointi mw tänne!
 const dataValidateMw = (req, res, next) => {
+
 const valid = validate(req.body);
+
 if(!valid){
   res.sendStatus(400);
 }else{
@@ -53,7 +47,7 @@ passport.use(new BasicStrategy(
 
     const searchResult = userDb.find(user => {
       //((username === user.username) && (password === user.password))
-      if(user.username === username){
+      if(user.accountName == username){
         if(bcrypt.compareSync(password, user.password)){
           return true;
         }
@@ -70,9 +64,10 @@ passport.use(new BasicStrategy(
   }
 ));
 //testataan että serveri toimii
-app.get('/', (req,res)=>{
+app.get('/', passport.authenticate('basic', {session:false}), (req,res)=>{
   res.send('Hello World')
 })
+
 
 let serverInstance = null;
 
@@ -81,28 +76,42 @@ app.get('/users', (req, res) =>{
 res.json(userDb);
 })
 
-app.post('/signup',(req,res)=>{
+app.post('/signup', dataValidateMw,(req,res) =>{
 
 const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 const date = new Date();
 const newUser = {
-  Name: req.body.name,
+  Name: req.body.Name,
   email: req.body.email,
   emailVerified: true,
   createDate: date,
-  username: req.body.username,
+  accountName: req.body.accountName,
   password: hashedPassword,
   Id : uuidv4()
-
 }
-
 userDb.push(newUser);
+res.sendStatus(201);
 
 })
-app.post('/login', passport.authenticate('basic', {session:false}),(req, res)=>{
-  const token = jwt.sign({}, asecretKey);
+const secretkey = "kello"
+var opts = {
+  jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey : secretkey
+}
 
-res.json({token: token});
+passport.use(new JwtStrategy(opts, (payload, done)=>{
+
+done(null, {});
+
+}))
+
+
+app.post('/login', passport.authenticate('basic', {session:false}),(req, res)=>{
+
+//  const token = jwt.sign( {}, secretkey);
+console.log('xD');
+//res.json({token: token});
+res.send('success');
 })
 
 ///ilmoitukset
