@@ -117,7 +117,7 @@ it('should contain added user data', function(done) {
   .end(function(err, res){
     expect(err).to.be.null;
     expect(res).to.have.status(200);
-    
+
     let found = false;
     for(let i = 0; i< res.body.length; i++) {
       if(res.body.length > 1) {
@@ -133,4 +133,37 @@ it('should contain added user data', function(done) {
 })
 
 })
+describe("add new postings",function() {
+ it("should add new posting with image to the database", function(done){
+   chai.request(address)
+   .post('/postings')
+   .send(
+     {
+       title: "vaate",
+Description: "hyvässä kunnossa",
+Category: "vaatteet",
+Images: "string",
+askingPrice: "100",
+DateOfPosting: "23.09.2021",
+  DeliveryType: {
+          shipping: true,
+          pickup: false
+  },
+  seller: {
+      phoneNumber: "43906408356",
+      email: "asdf@gmail.com"
+}
+     }
+   )
+   .attach("photos", "/home/eerik/1.jpeg")
+   .end(function(err, res){
+   expect(err).to.be.null;
+   expect(res).to.have.status(400);
+   done();
+   })
+   });
+
+ })
+
+
 })
