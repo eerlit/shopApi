@@ -1,0 +1,338 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example2.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "accountName": "derp1",
+            "title": "kone1337",
+            "Category": "tekniikka",
+            "location": "haukipudasoulu",
+            "gallery": {
+                "gallery": [
+                    {
+                        "fieldname": "gallery",
+                        "originalname": "Screenshot from 2021-09-13 19-46-22.png",
+                        "encoding": "7bit",
+                        "mimetype": "image/png",
+                        "destination": "uploads/",
+                        "filename": "3545d6357a0b16c91c967500360cc4f4",
+                        "path": "uploads/3545d6357a0b16c91c967500360cc4f4",
+                        "size": 33228
+                    },
+                    {
+                        "fieldname": "gallery",
+                        "originalname": "Screenshot from 2021-09-13 18-58-52.png",
+                        "encoding": "7bit",
+                        "mimetype": "image/png",
+                        "destination": "uploads/",
+                        "filename": "161fb76a6f8d0c7db8d293cf9d264902",
+                        "path": "uploads/161fb76a6f8d0c7db8d293cf9d264902",
+                        "size": 145885
+                    }
+                ]
+            },
+            "askingPrice": "4352343214",
+            "DateOfPosting": "6.10.2021",
+            "deliveryMethod": "homedelivery",
+            "sellerPhoneNumber": "2342356",
+            "sellerEmail": "jankon@tunkkaus.com"
+        }
+    ],
+    "required": [
+        "accountName",
+        "title",
+        "Category",
+        "location",
+        "gallery",
+        "askingPrice",
+        "DateOfPosting",
+        "deliveryMethod",
+        "sellerPhoneNumber",
+        "sellerEmail"
+    ],
+    "properties": {
+        "accountName": {
+            "$id": "#/properties/accountName",
+            "type": "string",
+            "title": "The accountName schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "derp1"
+            ]
+        },
+        "title": {
+            "$id": "#/properties/title",
+            "type": "string",
+            "title": "The title schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "kone1337"
+            ]
+        },
+        "Category": {
+            "$id": "#/properties/Category",
+            "type": "string",
+            "title": "The Category schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "tekniikka"
+            ]
+        },
+        "location": {
+            "$id": "#/properties/location",
+            "type": "string",
+            "title": "The location schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "haukipudasoulu"
+            ]
+        },
+        "gallery": {
+            "$id": "#/properties/gallery",
+            "type": "object",
+            "title": "The gallery schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "gallery": [
+                        {
+                            "fieldname": "gallery",
+                            "originalname": "Screenshot from 2021-09-13 19-46-22.png",
+                            "encoding": "7bit",
+                            "mimetype": "image/png",
+                            "destination": "uploads/",
+                            "filename": "3545d6357a0b16c91c967500360cc4f4",
+                            "path": "uploads/3545d6357a0b16c91c967500360cc4f4",
+                            "size": 33228
+                        },
+                        {
+                            "fieldname": "gallery",
+                            "originalname": "Screenshot from 2021-09-13 18-58-52.png",
+                            "encoding": "7bit",
+                            "mimetype": "image/png",
+                            "destination": "uploads/",
+                            "filename": "161fb76a6f8d0c7db8d293cf9d264902",
+                            "path": "uploads/161fb76a6f8d0c7db8d293cf9d264902",
+                            "size": 145885
+                        }
+                    ]
+                }
+            ],
+            "required": [
+                "gallery"
+            ],
+            "properties": {
+                "gallery": {
+                    "$id": "#/properties/gallery/properties/gallery",
+                    "type": "array",
+                    "title": "The gallery schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
+                            {
+                                "fieldname": "gallery",
+                                "originalname": "Screenshot from 2021-09-13 19-46-22.png",
+                                "encoding": "7bit",
+                                "mimetype": "image/png",
+                                "destination": "uploads/",
+                                "filename": "3545d6357a0b16c91c967500360cc4f4",
+                                "path": "uploads/3545d6357a0b16c91c967500360cc4f4",
+                                "size": 33228
+                            },
+                            {
+                                "fieldname": "gallery",
+                                "originalname": "Screenshot from 2021-09-13 18-58-52.png",
+                                "encoding": "7bit",
+                                "mimetype": "image/png",
+                                "destination": "uploads/",
+                                "filename": "161fb76a6f8d0c7db8d293cf9d264902",
+                                "path": "uploads/161fb76a6f8d0c7db8d293cf9d264902",
+                                "size": 145885
+                            }
+                        ]
+                    ],
+                    
+                    "items": {
+                        "$id": "#/properties/gallery/properties/gallery/items",
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/gallery/properties/gallery/items/anyOf/0",
+                                "type": "object",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "fieldname": "gallery",
+                                        "originalname": "Screenshot from 2021-09-13 19-46-22.png",
+                                        "encoding": "7bit",
+                                        "mimetype": "image/png",
+                                        "destination": "uploads/",
+                                        "filename": "3545d6357a0b16c91c967500360cc4f4",
+                                        "path": "uploads/3545d6357a0b16c91c967500360cc4f4",
+                                        "size": 33228
+                                    }
+                                ],
+                                "required": [
+                                    "fieldname",
+                                    "originalname",
+                                    "encoding",
+                                    "mimetype",
+                                    "destination",
+                                    "filename",
+                                    "path",
+                                    "size"
+                                ],
+                                "properties": {
+                                    "fieldname": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/fieldname",
+                                        "type": "string",
+                                        "title": "The fieldname schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "gallery"
+                                        ]
+                                    },
+                                    "originalname": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/originalname",
+                                        "type": "string",
+                                        "title": "The originalname schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "Screenshot from 2021-09-13 19-46-22.png"
+                                        ]
+                                    },
+                                    "encoding": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/encoding",
+                                        "type": "string",
+                                        "title": "The encoding schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "7bit"
+                                        ]
+                                    },
+                                    "mimetype": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/mimetype",
+                                        "type": "string",
+                                        "title": "The mimetype schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "image/png"
+                                        ]
+                                    },
+                                    "destination": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/destination",
+                                        "type": "string",
+                                        "title": "The destination schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "uploads/"
+                                        ]
+                                    },
+                                    "filename": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/filename",
+                                        "type": "string",
+                                        "title": "The filename schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "3545d6357a0b16c91c967500360cc4f4"
+                                        ]
+                                    },
+                                    "path": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/path",
+                                        "type": "string",
+                                        "title": "The path schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": "",
+                                        "examples": [
+                                            "uploads/3545d6357a0b16c91c967500360cc4f4"
+                                        ]
+                                    },
+                                    "size": {
+                                        "$id": "#/properties/gallery/properties/gallery/items/anyOf/0/properties/size",
+                                        "type": "integer",
+                                        "title": "The size schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": 0,
+                                        "examples": [
+                                            33228
+                                        ]
+                                    }
+                                },
+                                "additionalProperties": true
+                            }
+                        ]
+                    }
+                }
+            },
+            "additionalProperties": true
+        },
+        "askingPrice": {
+            "$id": "#/properties/askingPrice",
+            "type": "string",
+            "title": "The askingPrice schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "4352343214"
+            ]
+        },
+        "DateOfPosting": {
+            "$id": "#/properties/DateOfPosting",
+            "type": "string",
+            "title": "The DateOfPosting schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "6.10.2021"
+            ]
+        },
+        "deliveryMethod": {
+            "$id": "#/properties/deliveryMethod",
+            "type": "string",
+            "title": "The deliveryMethod schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "homedelivery"
+            ]
+        },
+        "sellerPhoneNumber": {
+            "$id": "#/properties/sellerPhoneNumber",
+            "type": "string",
+            "title": "The sellerPhoneNumber schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "2342356"
+            ]
+        },
+        "sellerEmail": {
+            "$id": "#/properties/sellerEmail",
+            "type": "string",
+            "title": "The sellerEmail schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "jankon@tunkkaus.com"
+            ]
+        }
+    },
+    "additionalProperties": true
+}
