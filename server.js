@@ -13,11 +13,15 @@ const BasicStrategy = require('passport-http').BasicStrategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const { v4: uuidv4 } = require('uuid');
+app.use(bodyParser.json());
 
 const schema = require("./schemas/userData.schema.json");
 const postingSchema = require("./schemas/postingData.schema.json");
+const updateSchema = require("./schemas/updateData.schema.json");
 const validate = ajv.compile(schema);
 const validate2 = ajv.compile(postingSchema);
+const validate3 = ajv.compile(updateSchema);
+
 
 //haetaan salausavain omasta filusta
 //const secrets = require('./secrets.json')
@@ -26,24 +30,28 @@ let userDb = [
 
 ];
 let postings = [];
-app.use(bodyParser.json());
+
 
 //postattu data skeeman validointi mw tänne!
 const dataValidateMw = (req, res, next) => {
 console.log("validoidaan");
-console.log(req.originalUrl);
+let check = req.originalUrl;
 let valid = "";
-console.log(validate.errors);
-console.log(validate2.errors);
+
 if(req.originalUrl == "/signup"){
   valid = validate(req.body);
 }
-if(req.originalUrl == "/postings"){
-  console.log("ASD");
+
+if(check.includes("posting")){
+
   valid = validate2(req.body);
   console.log(validate2.errors);
 }
-//console.log(validate.errors);
+if(check.includes("posting/users")){
+  valid = validate3(req.body);
+  console.log(validate3.errors);
+
+}
 
 if(!valid){
   res.sendStatus(400);
@@ -86,9 +94,7 @@ app.get('/', passport.authenticate('basic', {session:false}), (req,res)=>{
 let serverInstance = null;
 
 
-app.get('/users', (req, res) =>{
-res.json(userDb);
-})
+
 
 app.post('/signup', dataValidateMw,(req,res) =>{
 
@@ -108,7 +114,8 @@ userDb.push(newUser);
 res.sendStatus(201);
 
 })
-const secretkey = "kello"
+
+const secretkey = require("./secretkeys.json");
 var opts = {
   jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey : secretkey
@@ -124,7 +131,7 @@ done(null, {});
 app.post('/login', passport.authenticate('basic', {session:false}),(req, res)=>{
 
   //create a jwt for the client
-  const token = jwt.sign({ username: "password" }, secretkey);
+  const token = jwt.sign({ username: "password" }, secretkey.jwtSignKey);
 
 
   //send jwt to the client
@@ -132,20 +139,18 @@ app.post('/login', passport.authenticate('basic', {session:false}),(req, res)=>{
 
 
 })
-/*app.post('/upload', passport.authenticate('jwt',{session:false}), upload.array('photos', 12) (req, res, next)=>{
 
-})*/
 ///ilmoitukset
-const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
-//upload.array('photos', 12)
-app.post('/postings', passport.authenticate('jwt', {session: false}), cpUpload, dataValidateMw,(req, res, next) =>{
+const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }]);
+
+app.post('/postings/:user', passport.authenticate('jwt', {session: false}), cpUpload, dataValidateMw,(req, res, next) =>{
   const day = new Date();
   const date = day.getDate()+"."+(day.getMonth()+1)+"."+day.getFullYear();
 
 
 const newPosting = {
 
-  accountName : req.params.accountName,
+  accountName : req.params.user,
   id: uuidv4(),
   title: req.body.title,
   Description: req.body.Description,
@@ -164,23 +169,50 @@ postings.push(newPosting);
 
 res.sendStatus(200);
 })
-app.put('/postings/users/:accountName',passport.authenticate('jwt', {session:false}), (req, res)=>{
-  console.log("acc0"+req.params.accountName);
-  const posting = postings.find(d => d.accountName == req.params.accountName);
-  if(posting.accountName == undefined){
-    res.sendstatus(404);
-  }else{
-    res.json(posting);
-  }
+
+const cpUpdate = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
+app.put('/postings/users/:user/:title', passport.authenticate('jwt', {session:false}), cpUpdate,dataValidateMw, (req, res, next)=>{
+let post = "";
+const day = new Date();
+const date = day.getDate()+"."+(day.getMonth()+1)+"."+day.getFullYear();
+
+
+let found = postings.find(function (post){
+  return post.title == req.params.title;
+
+})
+if(found && req.params.user == found.accountName){
+  let updated = {
+    accountName : req.params.user,
+    id: post.id,
+    title: req.body.title,
+    Description: req.body.Description,
+    Category: req.body.Category,
+    location: req.body.location,
+    gallery: req.files,
+    askingPrice: req.body.askingPrice,
+    DateOfPosting: date,
+    deliveryMethod: req.body.deliveryMethod,
+    sellerPhoneNumber:req.body.sellerPhoneNumber,
+    sellerEmail: req.body.sellerEmail
+  };
+  let targetIndex = postings.indexOf(found);
+
+  postings.splice(targetIndex, 1, updated);
+
+  res.sendStatus(200);
+}else {
+  res.sendStatus(404);
+}
+
 })
 app.get('/postings/users/:accountName', passport.authenticate('jwt', {session:false}), (req, res)=>{
-  console.log("acc0"+req.params.accountName);
-  const posting = postings.find(d => d.accountName == req.params.accountName);
-  if(posting.accountName == undefined){
-    res.sendstatus(404);
-  }else{
-    res.json(posting);
+let filteredArr = []
+    for(let i = 0; i < postings.length; i++){
+       filteredArr = postings.filter(item => req.params.accountName == item.accountName )
   }
+  res.json(filteredArr);
+
 })
 
 app.get('/postings/search/:category/:value', (req, res)=>{
@@ -225,8 +257,29 @@ app.get('/postings/:id', passport.authenticate('jwt', {session:false}),(req, res
   }
 
 })
+app.get('/postings',(req, res)=>{
 
-app.delete('/postings', (req, res)=>{
+    res.json(postings);
+
+})
+
+app.delete('/postings/:user/:title', passport.authenticate('jwt', {session:false}), (req, res)=>{
+
+  let found = postings.find(function (post){
+    return post.title == req.params.title;
+
+  })
+
+  if(found && req.params.user == found.accountName){
+    let indexToBeDeleted = postings.indexOf(found);
+
+    postings.splice(indexToBeDeleted, 1);
+
+    res.sendStatus(200);
+  }else {
+    res.sendStatus(403);
+  }
+
 
 })
 
