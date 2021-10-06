@@ -23,8 +23,6 @@ const validate2 = ajv.compile(postingSchema);
 const validate3 = ajv.compile(updateSchema);
 
 
-//haetaan salausavain omasta filusta
-//const secrets = require('./secrets.json')
 
 let userDb = [
 
@@ -32,7 +30,7 @@ let userDb = [
 let postings = [];
 
 
-//postattu data skeeman validointi mw tänne!
+
 const dataValidateMw = (req, res, next) => {
 console.log("validoidaan");
 let check = req.originalUrl;
@@ -140,7 +138,7 @@ app.post('/login', passport.authenticate('basic', {session:false}),(req, res)=>{
 
 })
 
-///ilmoitukset
+
 const cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }]);
 
 app.post('/postings/:user', passport.authenticate('jwt', {session: false}), cpUpload, dataValidateMw,(req, res, next) =>{
