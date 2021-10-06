@@ -118,7 +118,7 @@ res.sendStatus(201);
 const secretkey = require("./secretkeys.json");
 var opts = {
   jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey : secretkey
+  secretOrKey : secretkey.jwtSignKey
 }
 
 passport.use(new JwtStrategy(opts, (payload, done)=>{
@@ -277,7 +277,11 @@ app.delete('/postings/:user/:title', passport.authenticate('jwt', {session:false
 
     res.sendStatus(200);
   }else {
+    if(!found){
+      res.sendStatus(400);
+    }else{
     res.sendStatus(403);
+  }
   }
 
 

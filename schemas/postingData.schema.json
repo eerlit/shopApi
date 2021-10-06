@@ -70,6 +70,7 @@
         "title": {
             "$id": "#/properties/title",
             "type": "string",
+            "minLength": 3,
             "title": "The title schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -90,6 +91,7 @@
         "Category": {
             "$id": "#/properties/Category",
             "type": "string",
+            "minLength": 3,
             "title": "The Category schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -100,6 +102,7 @@
         "location": {
             "$id": "#/properties/location",
             "type": "string",
+            "minLength": 3,
             "title": "The location schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -318,6 +321,7 @@
         "deliveryMethod": {
             "$id": "#/properties/deliveryMethod",
             "type": "string",
+            "minLength": 3,
             "title": "The deliveryMethod schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -328,6 +332,7 @@
         "sellerPhoneNumber": {
             "$id": "#/properties/sellerPhoneNumber",
             "type": "string",
+            "minLength": 3,
             "title": "The sellerPhoneNumber schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -338,6 +343,7 @@
         "sellerEmail": {
             "$id": "#/properties/sellerEmail",
             "type": "string",
+            "minLength": 3,
             "title": "The sellerEmail schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",

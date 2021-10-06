@@ -27,6 +27,7 @@
         "Name": {
             "$id": "#/properties/Name",
             "type": "string",
+            "minLength": 3,
             "title": "The Name schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -37,6 +38,7 @@
         "email": {
             "$id": "#/properties/email",
             "type": "string",
+            "minLength": 5,
             "title": "The email schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -67,6 +69,7 @@
         "accountName": {
             "$id": "#/properties/accountName",
             "type": "string",
+            "minLength": 3,
             "title": "The accountName schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
@@ -77,6 +80,7 @@
         "password": {
             "$id": "#/properties/password",
             "type": "string",
+            "minLength": 3,
             "title": "The password schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
